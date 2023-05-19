@@ -1,0 +1,20 @@
+ - Run communication between jetson and arduino:
+		
+		sudo python3 arduino-jetson_cmd.py
+
+
+ - Run lidar scan: 
+		
+		python3 lidar_plot.py
+
+
+ - Instructions to run rplidar withjetson and ROS: 
+		
+		https://www.hackster.io/shahizat/building-a-map-using-lidar-with-ros-melodic-on-jetson-nano-2f92dd
+
+
+ - Activate catkin workspace:
+		
+		cd catkin_ws/
+		catkin_make
+		source devel/setup.bash
