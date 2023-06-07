@@ -4,7 +4,7 @@ A Reinfocement Learning Omnidirectional robot to transport hospital materials.
 
 ## Description
 
-This project represents my MSc Thesis, focused on developing an Omnidirectional robot designed to efficiently transport hospital materials. The robot incorporates advanced reinforcement learning techniques to dynamically adapt and navigate through diverse environments, while also learning to perform new tasks through trial and error.
+This project represents my MSc Thesis, focused on developing an Omnidirectional robot designed to efficiently transport hospital materials. The robot incorporates advanced reinforcement learning techniques to dynamically adapt and navigate through diverse environments, while also learning to perform new tasks through trial and error. This project is a collaboration between Instituto Superior Técnico and the Champalimaud Foundation.
 
 ### Features
 
