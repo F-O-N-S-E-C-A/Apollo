@@ -18,35 +18,34 @@
 #define LeftMotorDirPin2B 24 //8  //Rear Left Motor direction pin 2 to Left  MODEL-X IN4 (K3)
 #define speedPinLB 9 //12    //  Rear Wheel PWM pin connect Left MODEL-X ENB
 
-int custom_speed(int default_max_speed, int val, int stop_val, int max_val){
-  int speed;
-  if(val > stop_val){
-    speed = (val - stop_val) * (default_max_speed/max_val);
-  } else {
-    speed = (stop_val - val) * (default_max_speed/max_val);
-  }
-  return speed;
-}
 
-/*motor control*/
-void go_advance(int speed){
+float x = 0.0;
+float y = 0.0;
+float theta = 0.0;
+
+// --------- movement functions control ---------
+
+void front(int speed){
    RL_fwd(speed);
    RR_fwd(speed);
    FR_fwd(speed);
    FL_fwd(speed); 
 }
-void go_back(int speed){
+
+void back(int speed){
    RL_bck(speed);
    RR_bck(speed);
    FR_bck(speed);
    FL_bck(speed); 
 }
+
 void right_shift(int speed_fl_fwd,int speed_rl_bck ,int speed_rr_fwd,int speed_fr_bck) {
   FL_fwd(speed_fl_fwd); 
   RL_bck(speed_rl_bck); 
   RR_fwd(speed_rr_fwd);
   FR_bck(speed_fr_bck);
 }
+
 void left_shift(int speed_fl_bck,int speed_rl_fwd ,int speed_rr_bck,int speed_fr_fwd){
    FL_bck(speed_fl_bck);
    RL_fwd(speed_rl_fwd);
@@ -60,34 +59,25 @@ void left_turn(int speed){
    FR_fwd(speed);
    FL_bck(0); 
 }
+
 void right_turn(int speed){
    RL_fwd(speed);
    RR_bck(0);
    FR_bck(0);
    FL_fwd(speed); 
 }
+
 void left_back(int speed){
    RL_fwd(0);
    RR_bck(speed);
    FR_bck(speed);
    FL_fwd(0); 
 }
+
 void right_back(int speed){
    RL_bck(speed);
    RR_fwd(0);
    FR_fwd(0);
-   FL_bck(speed); 
-}
-void clockwise(int speed){
-   RL_fwd(speed);
-   RR_bck(speed);
-   FR_bck(speed);
-   FL_fwd(speed); 
-}
-void countclockwise(int speed){
-   RL_bck(speed);
-   RR_fwd(speed);
-   FR_fwd(speed);
    FL_bck(speed); 
 }
 
@@ -104,6 +94,8 @@ void rot_left(int speed){
    FR_fwd(speed);
    FL_bck(speed);
 }
+
+// --------- single wheel control ---------
 
 void FR_fwd(int speed)  //front-right wheel forward turn
 {
@@ -163,7 +155,6 @@ void stop_Stop()    //Stop
   analogWrite(speedPinR,0);
 }
 
-
 //Pins initialize
 void init_GPIO()
 {
@@ -182,12 +173,6 @@ void init_GPIO()
   pinMode(LeftMotorDirPin2B, OUTPUT); 
   pinMode(speedPinRB, OUTPUT);
 
-  /*pinMode(A8, INPUT);
-  pinMode(A8, INPUT_PULLUP); 
-  pinMode(A9, INPUT);
-  pinMode(A9, INPUT_PULLUP); 
-  pinMode(A10, INPUT);
-  pinMode(A10, INPUT_PULLUP);*/
   stop_Stop();
 }
 
@@ -199,72 +184,42 @@ void setup()
   delay (1000);
   Serial.println("GPIO init complete...");
  
-  go_advance(SPEED);
+  front(SPEED);
   delay(100);
   stop_Stop();
   delay(100);
   Serial.println("Advance movement complete...");
   
-  go_back(SPEED);
+  back(SPEED);
   delay(100);
   stop_Stop();
   delay(100);
   Serial.println("Back movement complete...");
 
-
-/*left_turn(TURN_SPEED);
-      delay(1000);
-      stop_Stop();
-      delay(1000);
-	  
-right_turn(TURN_SPEED);
-     delay(1000);
-     stop_Stop();
-     delay(1000);
-  
-right_shift(200,200,200,200); //right shift
-     delay(1000);
-     stop_Stop();
-     delay(1000);
-
-left_shift(200,200,200,200); //left shift
-     delay(1000);
-     stop_Stop();
-     delay(1000);
-	 
-left_shift(200,0,200,0); //left diagonal back
-     delay(1000);
-     stop_Stop();
-	 delay(1000);
- 
-right_shift(200,0,200,0); //right diagonal ahead
-     delay(1000);
-     stop_Stop();
-	 delay(1000);
-
-left_shift(0,200,0,200); //left diagonal ahead
-     delay(1000);
-     stop_Stop();
-     delay(1000);
-
-right_shift(0,200,0,200); //right diagonal back
-     delay(1000);
-     stop_Stop();
-	 delay(1000);*/
 }
-
 
 void loop(){
 
   delay(20);
 
+  int speed = 100; 
+
   if (Serial1.available()) {
     String data = Serial1.readStringUntil('\n');
-    Serial.print("Received: ");
-    Serial.println(data);
+
+    // get the speed and trim
+    int commaIndex = data.indexOf(',');
+    if (commaIndex != -1) {
+      String numberString = data.substring(commaIndex + 1);
+      data = data.substring(0, commaIndex);
+      speed = numberString.toInt();
+    }
+
+    //Serial.print("Received: ");
+    //Serial.println(data);
 
     if(data.equals("front") || data.equals("f")){
-      go_advance(custom_speed(SPEED, 0, 83, 136));
+      front(speed);
     }
 
     else if(data.equals("stop") || data.equals("s")){
@@ -272,109 +227,75 @@ void loop(){
     }
 
     else if(data.equals("back") || data.equals("b")){
-      go_back(custom_speed(SPEED, 0, 83, 136));
+      back(speed);
     } 
 
     else if(data.equals("front_diagonal_left") || data.equals("fdl")){
-      FL_fwd(SPEED);
-      RR_fwd(SPEED);
+      FL_fwd(speed);
+      RR_fwd(speed);
     }
 
     else if(data.equals("front_diagonal_right") || data.equals("fdr")){
-      FR_fwd(SPEED);
-      RL_fwd(SPEED);
+      FR_fwd(speed);
+      RL_fwd(speed);
     }
 
     else if(data.equals("back_diagonal_left") || data.equals("bdl")){
-      FR_bck(SPEED);
-      RL_bck(SPEED);
+      FR_bck(speed);
+      RL_bck(speed);
     }
 
     else if(data.equals("back_diagonal_right") || data.equals("bdr")){
-      FL_bck(SPEED);
-      RR_bck(SPEED);
+      FL_bck(speed);
+      RR_bck(speed);
     }
 
     else if(data.equals("turn_left") || data.equals("tl")){
-      rot_left(SPEED);
+      rot_left(speed);
+    }
+
+    else if(data.equals("smooth_turn_left") || data.equals("stl")){
+      FL_fwd(speed-60);
+      FR_fwd(speed+50);
+      RR_fwd(speed+100);
+      RL_fwd(speed-40);
+    }
+
+    else if(data.equals("smooth_turn_right") || data.equals("str")){
+      FR_fwd(speed-60);
+      FL_fwd(speed+50);
+      RL_fwd(speed+100);
+      RR_fwd(speed-40);
     }
 
     else if(data.equals("turn_right") || data.equals("tr")){
-      rot_right(SPEED);
+      rot_right(speed);
     } 
 
     else if(data.equals("rotate_right") || data.equals("rr")){
-      rot_right(SPEED);
+      rot_right(speed);
     } 
 
     else if(data.equals("rotate_left") || data.equals("rl")){
-      rot_left(SPEED);
+      rot_left(speed);
     }
 
     else if(data.equals("shift_left") || data.equals("sl")){
-      left_shift(var_speed,var_speed,var_speed,var_speed);
+      left_shift(speed,speed,speed,speed);
     }
 
     else if(data.equals("shift_right") || data.equals("sr")){
-      right_shift(var_speed,var_speed,var_speed,var_speed);
+      right_shift(speed,speed,speed,speed);
     }
-
-    
 
     else {
       Serial1.println("Invalid command");
-      Serial.print("Invalid command");
-
     }
 
-    delay(300);
+    delay(100);
     stop_Stop();
 
-   
   }
     // Echo back the received data
     // Serial1.print(data);
-  
-
-
-  
-  
-  /*if ((val1 > 100) && (val_shift > 100)){
-    right_shift(var_speed,0,var_speed,0);
-  }
-  else if ((val1 > 100) && (val_shift < 60)){
-    left_shift(0,var_speed,0,var_speed);
-  }
-  else if ((val1 < 60) && (val_shift > 100)){
-    right_shift(0,var_speed,0,var_speed);
-  }
-  else if ((val1 < 60) && (val_shift < 60)){
-    left_shift(var_speed,0,var_speed,0);
-  }
-  else if (val1 > 100){
-    //go_advance(SPEED);
-    go_advance(custom_speed(SPEED, val1, 83, 136));
-  }
-  else if (val1 < 60){
-    //go_back(SPEED);
-    go_back(custom_speed(SPEED, val1, 83, 136));
-  }
-  else if (val_rot > 100){
-    //right_turn(SPEED);
-    rot_right(SPEED);
-  }
-  else if (val_rot < 60){
-    //left_turn(SPEED);
-    rot_left(SPEED);
-  }
-  else if (val_shift > 100){
-    right_shift(var_speed,var_speed,var_speed,var_speed);
-  }
-  else if (val_shift < 60){
-    left_shift(var_speed,var_speed,var_speed,var_speed);
-  }
-  else{
-  stop_Stop();
-  }*/
-  
 }

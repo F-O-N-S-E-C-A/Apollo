@@ -18,3 +18,19 @@
 		cd catkin_ws/
 		catkin_make
 		source devel/setup.bash
+
+- Make a catkin workspace: 
+
+	source /opt/ros/melodic/setup.bash
+	mkdir -p ~/apollo/catkin_ws/src
+	cd ~/apollo/catkin_ws/
+	catkin_make
+
+- Run cartographer with ros and RPLidar
+
+	https://medium.com/robotics-weekends/2d-mapping-using-google-cartographer-and-rplidar-with-raspberry-pi-a94ce11e44c5
+
+	roslaunch gbot_core gbot.launch
+	roslaunch gbot_core visualization.launch
+
+
