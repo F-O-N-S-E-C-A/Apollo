@@ -1,5 +1,7 @@
 # Apollo
 
+![Screenshot](https://github.com/F-O-N-S-E-C-A/Apollo/blob/main/imgs/logo.jpg)
+
 A Reinfocement Learning Omnidirectional robot to transport hospital materials.
 
 ## Description
