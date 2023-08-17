@@ -1,0 +1,18 @@
+Simulated gazebo envs:
+
+	- Compilations of multiple sources:
+		- https://automaticaddison.com/useful-world-files-for-gazebo-and-ros-2-simulations/
+		- https://github.com/mlherd/Dataset-of-Gazebo-Worlds-Models-and-Maps
+
+	- Currently using:
+		- https://github.com/aws-robotics/aws-robomaker-hospital-world/tree/ros1
+
+
+Docker: 
+
+	- https://github.com/henry2423/docker-ros-x11
+
+Robot:
+
+	- https://github.com/g1412049/omnidirectional_four-wheeled_robot/tree/master
+
