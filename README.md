@@ -18,7 +18,8 @@ This project represents my MSc Thesis, focused on developing an Omnidirectional 
 
 ## The robot
 
-![Screenshot](https://github.com/F-O-N-S-E-C-A/Apollo/blob/main/imgs/IMG_0671.JPG)
-![Screenshot](https://github.com/F-O-N-S-E-C-A/Apollo/blob/main/imgs/IMG_0672.JPG)
-![Screenshot](https://github.com/F-O-N-S-E-C-A/Apollo/blob/main/imgs/IMG_0673.JPG)
-![Screenshot](https://github.com/F-O-N-S-E-C-A/Apollo/blob/main/imgs/IMG_0675.JPG)
+![Screenshot](https://github.com/F-O-N-S-E-C-A/Apollo/blob/main/imgs/img1.jpg)
+![Screenshot](https://github.com/F-O-N-S-E-C-A/Apollo/blob/main/imgs/img2.jpg)
+![Screenshot](https://github.com/F-O-N-S-E-C-A/Apollo/blob/main/imgs/img3.jpg)
+![Screenshot](https://github.com/F-O-N-S-E-C-A/Apollo/blob/main/imgs/img4.jpg)
+![Screenshot](https://github.com/F-O-N-S-E-C-A/Apollo/blob/main/imgs/img5.jpg)
